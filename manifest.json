@@ -5,6 +5,7 @@
     "description": "Трекер чистки зубов и ухода за полостью рта",
     "start_url": "index.html",
     "display": "standalone",
+    "display_override": ["standalone", "minimal-ui"],
     "background_color": "#1a4a8a",
     "theme_color": "#1a4a8a",
     "orientation": "portrait",
