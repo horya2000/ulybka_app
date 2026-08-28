@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Улыбка</title>
     
+    <!-- ПРАВИЛЬНЫЕ ССЫЛКИ ДЛЯ PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#1a4a8a">
+    
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -1397,13 +1401,12 @@
         
         if (index < 0 || index >= notes.length) return;
         
-        if (confirm(`🗑️ Удалить эту заметку?\n\n"${notes[index].substring(0, 60)}${notes[index].length > 60 ? '...' : ''}"`)) {
-            notes.splice(index, 1);
-            state.notes = notes.join('\n\n');
-            saveState();
-            renderNotesList();
-            showToast('🗑️ Заметка удалена');
-        }
+        // Убрали confirm() для корректной работы в WebView
+        notes.splice(index, 1);
+        state.notes = notes.join('\n\n');
+        saveState();
+        renderNotesList();
+        showToast('🗑️ Заметка удалена');
     }
 
     function deleteAllNotes() {
@@ -1414,12 +1417,10 @@
             return;
         }
 
-        if (confirm(`🗑️ Удалить все ${notes.length} заметок?`)) {
-            state.notes = '';
-            saveState();
-            renderNotesList();
-            showToast('🗑️ Все заметки удалены');
-        }
+        state.notes = '';
+        saveState();
+        renderNotesList();
+        showToast('🗑️ Все заметки удалены');
     }
 
     function openNotes() {
