@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Улыбка</title>
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: #1a4a8a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+            min-height: 100dvh;
+        }
+
+        .app-container {
+            max-width: 440px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 40px;
+            padding: 24px 18px 32px;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 20px 60px rgba(0, 0, 0, 0.25),
+                0 8px 24px rgba(0, 0, 0, 0.12);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .app-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 15%;
+            right: 15%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(70, 130, 200, 0.15), rgba(70, 130, 200, 0.25), rgba(70, 130, 200, 0.15), transparent);
+            border-radius: 50%;
+            filter: blur(3px);
+            opacity: 0.8;
+        }
+
+        .app-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                rgba(70, 130, 200, 0.03) 0%,
+                transparent 30%,
+                transparent 70%,
+                rgba(70, 130, 200, 0.01) 100%);
+            border-radius: 40px;
+            pointer-events: none;
+        }
+
+        /* ===== ШАПКА ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0a2647;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header h1 .tooth-icon {
+            font-size: 28px;
+            color: #1a4a8a;
+            display: flex;
+            align-items: center;
+        }
+
+        .header h1 span {
+            background: rgba(26, 74, 138, 0.08);
+            font-size: 18px;
+            padding: 4px 14px;
+            border-radius: 60px;
+            color: #1a4a8a;
+            font-weight: 600;
+            border: 1px solid rgba(26, 74, 138, 0.08);
+        }
+
+        .header .notes-btn {
+            background: rgba(26, 74, 138, 0.06);
+            border: 1px solid rgba(26, 74, 138, 0.08);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a4a8a;
+            font-size: 20px;
+        }
+        .header .notes-btn:active { transform: scale(0.92); background: rgba(26, 74, 138, 0.12); }
+
+        .subhead {
+            color: #4a6a8a;
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 18px;
+            border-left: 3px solid rgba(26, 74, 138, 0.15);
+            padding-left: 14px;
+            background: rgba(26, 74, 138, 0.03);
+            border-radius: 0 10px 10px 0;
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== СТАТУС ===== */
+        .status-grid {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .status-card {
+            flex: 1;
+            background: rgba(26, 74, 138, 0.06);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 14px 6px 12px;
+            text-align: center;
+            border: 1px solid rgba(26, 74, 138, 0.08);
+            box-shadow: 0 2px 12px rgba(26, 74, 138, 0.04);
+            transition: all 0.3s;
+        }
+
+        .status-card.active {
+            background: rgba(26, 74, 138, 0.12);
+            border-color: rgba(26, 74, 138, 0.20);
+            box-shadow: 0 4px 20px rgba(26, 74, 138, 0.08);
+        }
+
+        .status-card .icon {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 2px;
+            color: #1a4a8a;
+        }
+
+        .status-card .label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0a2647;
+        }
+        .status-card .time-badge {
+            font-size: 11px;
+            font-weight: 500;
+            background: rgba(26, 74, 138, 0.06);
+            padding: 2px 12px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 3px;
+            color: #1a4a8a;
+            border: 1px solid rgba(26, 74, 138, 0.06);
+        }
+        .status-card .status-text {
+            font-size: 12px;
+            margin-top: 4px;
+            color: #3a6a8a;
+            font-weight: 500;
+        }
+
+        /* ===== КНОПКА ===== */
+        .btn-primary {
+            display: block;
+            width: 100%;
+            padding: 16px 0;
+            background: linear-gradient(135deg, #1a4a8a, #2a6aaa);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            box-shadow: 0 8px 24px rgba(26, 74, 138, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: all 0.15s;
+            cursor: pointer;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        .btn-primary:active { transform: scale(0.97); box-shadow: 0 4px 12px rgba(26, 74, 138, 0.15); }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            transform: none;
+            pointer-events: none;
+            background: #8a9aaa;
+            box-shadow: none;
+        }
+
+        .btn-primary .icon-inline {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        /* ===== УХОД ===== */
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0a2647;
+            margin: 16px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .section-title .badge {
+            font-size: 11px;
+            background: rgba(26, 74, 138, 0.06);
+            padding: 2px 10px;
+            border-radius: 40px;
+            color: #1a4a8a;
+            font-weight: 400;
+        }
+
+        .care-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+
+        .care-grid.two-cols {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .care-card {
+            background: rgba(26, 74, 138, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 14px 8px 12px;
+            text-align: center;
+            border: 1px solid rgba(26, 74, 138, 0.08);
+            box-shadow: 0 2px 12px rgba(26, 74, 138, 0.03);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .care-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(26, 74, 138, 0.04), transparent 60%);
+            pointer-events: none;
+        }
+
+        .care-card.done {
+            background: rgba(26, 74, 138, 0.10);
+            border-color: rgba(26, 74, 138, 0.15);
+        }
+
+        .care-card .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 2px;
+            color: #1a4a8a;
+        }
+
+        .care-card .name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #0a2647;
+        }
+        .care-card .freq {
+            font-size: 10px;
+            color: #5a7a9a;
+            margin-top: 1px;
+        }
+        .care-card .status-text {
+            font-size: 12px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        .care-card .status-text.done { color: #1a7a4a; }
+        .care-card .status-text.pending { color: #5a7a9a; }
+        .care-card .status-text.overdue { color: #c0392b; }
+
+        .care-card .btn-mark {
+            margin-top: 6px;
+            padding: 4px 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(26, 74, 138, 0.12);
+            background: rgba(26, 74, 138, 0.05);
+            font-size: 11px;
+            font-weight: 500;
+            color: #1a4a8a;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .care-card .btn-mark:active { transform: scale(0.94); background: rgba(26, 74, 138, 0.10); }
+
+        .care-card.hidden {
+            display: none;
+        }
+
+        /* Стоматолог */
+        .care-card-full {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            background: rgba(26, 74, 138, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 20px;
+            border: 1px solid rgba(26, 74, 138, 0.08);
+            box-shadow: 0 2px 12px rgba(26, 74, 138, 0.03);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .care-card-full::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(26, 74, 138, 0.04), transparent 60%);
+            pointer-events: none;
+        }
+
+        .care-card-full.done {
+            background: rgba(26, 74, 138, 0.10);
+            border-color: rgba(26, 74, 138, 0.15);
+        }
+
+        .care-card-full.hidden {
+            display: none;
+        }
+
+        .care-card-full .left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .care-card-full .left .icon {
+            font-size: 28px;
+            color: #1a4a8a;
+        }
+
+        .care-card-full .left .info .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0a2647;
+        }
+        .care-card-full .left .info .freq {
+            font-size: 11px;
+            color: #5a7a9a;
+        }
+
+        .care-card-full .right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .care-card-full .right .status-text {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .care-card-full .right .status-text.done { color: #1a7a4a; }
+        .care-card-full .right .status-text.pending { color: #5a7a9a; }
+        .care-card-full .right .status-text.overdue { color: #c0392b; }
+
+        .care-card-full .btn-mark {
+            padding: 5px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(26, 74, 138, 0.12);
+            background: rgba(26, 74, 138, 0.05);
+            font-size: 12px;
+            font-weight: 500;
+            color: #1a4a8a;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .care-card-full .btn-mark:active { transform: scale(0.94); background: rgba(26, 74, 138, 0.10); }
+
+        /* ===== КАЛЕНДАРЬ ===== */
+        .calendar-section {
+            background: rgba(26, 74, 138, 0.04);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 14px 12px 12px;
+            margin: 14px 0 12px;
+            border: 1px solid rgba(26, 74, 138, 0.06);
+            box-shadow: 0 2px 12px rgba(26, 74, 138, 0.02);
+            position: relative;
+            z-index: 1;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .calendar-header .month {
+            font-weight: 600;
+            font-size: 16px;
+            color: #0a2647;
+        }
+        .calendar-nav {
+            display: flex;
+            gap: 6px;
+        }
+        .calendar-nav button {
+            background: rgba(26, 74, 138, 0.05);
+            border: 1px solid rgba(26, 74, 138, 0.06);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            color: #1a4a8a;
+            transition: all 0.15s;
+        }
+        .calendar-nav button:active { transform: scale(0.92); background: rgba(26, 74, 138, 0.10); }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+        }
+        .calendar-grid .day-name {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #5a7a9a;
+            padding: 3px 0;
+        }
+        .calendar-grid .day-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a3a5a;
+            border: 1px solid transparent;
+            cursor: default;
+            transition: all 0.15s;
+            background: transparent;
+        }
+        .calendar-grid .day-cell.empty {
+            background: transparent;
+            border-color: transparent;
+        }
+        .calendar-grid .day-cell.today {
+            border-color: rgba(26, 74, 138, 0.25);
+            box-shadow: 0 0 0 1px rgba(26, 74, 138, 0.08);
+        }
+        .calendar-grid .day-cell.status-complete {
+            background: rgba(26, 122, 74, 0.08);
+            border-color: rgba(26, 122, 74, 0.10);
+        }
+        .calendar-grid .day-cell.status-partial {
+            background: rgba(200, 160, 50, 0.08);
+            border-color: rgba(200, 160, 50, 0.10);
+        }
+        .calendar-grid .day-cell.status-missed {
+            background: rgba(192, 57, 43, 0.08);
+            border-color: rgba(192, 57, 43, 0.10);
+        }
+        .calendar-grid .day-cell .status-icon {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .calendar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #4a6a8a;
+            flex-wrap: wrap;
+        }
+        .calendar-legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(26, 74, 138, 0.05);
+        }
+        .dot-green { background: rgba(26, 122, 74, 0.12); }
+        .dot-yellow { background: rgba(200, 160, 50, 0.12); }
+        .dot-red { background: rgba(192, 57, 43, 0.12); }
+        .dot-gray { background: rgba(200, 210, 220, 0.10); }
+
+        /* ===== ИСТОРИЯ ===== */
+        .log-area {
+            background: rgba(26, 74, 138, 0.04);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 12px 14px;
+            border: 1px solid rgba(26, 74, 138, 0.06);
+            box-shadow: 0 2px 12px rgba(26, 74, 138, 0.02);
+            position: relative;
+            z-index: 1;
+        }
+
+        .log-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0a2647;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .log-title span:last-child {
+            font-weight: 400;
+            font-size: 13px;
+            color: #4a6a8a;
+        }
+
+        .log-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            max-height: 120px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .log-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .log-list::-webkit-scrollbar-track {
+            background: rgba(26, 74, 138, 0.04);
+            border-radius: 10px;
+        }
+        .log-list::-webkit-scrollbar-thumb {
+            background: rgba(26, 74, 138, 0.12);
+            border-radius: 10px;
+        }
+
+        .log-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            padding: 5px 10px 5px 12px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            border-left: 3px solid rgba(26, 74, 138, 0.15);
+        }
+        .log-item .log-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .log-item .log-status-icon {
+            font-size: 16px;
+        }
+        .log-item .log-status-icon.missed {
+            color: #c0392b;
+        }
+        .log-item .log-status-icon.done {
+            color: #1a7a4a;
+        }
+        .log-item .log-status-icon.partial {
+            color: #c8a032;
+        }
+        .log-item .log-time {
+            font-size: 12px;
+            color: #4a6a8a;
+        }
+
+        .toast {
+            background: rgba(10, 38, 71, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 60px;
+            font-size: 14px;
+            font-weight: 450;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            margin-top: 10px;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* ===== ЗАМЕТКИ ===== */
+        .notes-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 38, 71, 0.60);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .notes-overlay.active {
+            display: flex;
+        }
+
+        .notes-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 28px 24px;
+            max-width: 400px;
+            width: 92%;
+            border: 1px solid rgba(26, 74, 138, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.20);
+            position: relative;
+        }
+
+        .notes-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 20%;
+            right: 20%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(26, 74, 138, 0.2), rgba(26, 74, 138, 0.3), rgba(26, 74, 138, 0.2), transparent);
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        .notes-box h2 {
+            font-size: 20px;
+            color: #0a2647;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #notesList {
+            max-height: 140px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            padding-right: 4px;
+        }
+
+        #notesList::-webkit-scrollbar {
+            width: 4px;
+        }
+        #notesList::-webkit-scrollbar-track {
+            background: rgba(26, 74, 138, 0.04);
+            border-radius: 10px;
+        }
+        #notesList::-webkit-scrollbar-thumb {
+            background: rgba(26, 74, 138, 0.12);
+            border-radius: 10px;
+        }
+
+        .note-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            background: rgba(26, 74, 138, 0.04);
+            border-radius: 14px;
+            padding: 10px 12px 10px 14px;
+            margin-bottom: 6px;
+            border: 1px solid rgba(26, 74, 138, 0.06);
+            transition: all 0.2s;
+            gap: 8px;
+        }
+
+        .note-item:hover {
+            background: rgba(26, 74, 138, 0.07);
+        }
+
+        .note-item .note-text {
+            font-size: 14px;
+            color: #1a3a5a;
+            line-height: 1.4;
+            flex: 1;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .note-item .note-delete-btn {
+            background: rgba(192, 57, 43, 0.06);
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s;
+            color: #8a2a1a;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .note-item .note-delete-btn:active {
+            transform: scale(0.85);
+            background: rgba(192, 57, 43, 0.12);
+        }
+
+        .saved-notes.empty {
+            color: #7a9aba;
+            font-style: italic;
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .notes-box textarea {
+            width: 100%;
+            height: 100px;
+            padding: 14px;
+            border: 1px solid rgba(26, 74, 138, 0.10);
+            border-radius: 16px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: vertical;
+            background: rgba(255, 255, 255, 0.5);
+            color: #1a3a5a;
+            transition: border 0.2s;
+        }
+        .notes-box textarea:focus {
+            outline: none;
+            border-color: rgba(26, 74, 138, 0.25);
+        }
+
+        .notes-box .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #7a9aba;
+            margin-top: 4px;
+        }
+
+        .notes-box .notes-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .notes-box .notes-actions button {
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .notes-box .notes-actions button:active { transform: scale(0.94); }
+
+        .notes-box .btn-save {
+            background: linear-gradient(135deg, #1a4a8a, #2a6aaa);
+            color: white;
+            box-shadow: 0 4px 16px rgba(26, 74, 138, 0.20);
+        }
+
+        .notes-box .btn-delete-all {
+            background: rgba(192, 57, 43, 0.08);
+            color: #8a2a1a;
+            border: 1px solid rgba(192, 57, 43, 0.08);
+        }
+
+        .notes-box .btn-close {
+            background: rgba(26, 74, 138, 0.05);
+            color: #1a3a5a;
+            border: 1px solid rgba(26, 74, 138, 0.06);
+        }
+
+        /* ===== ТАЙМЕР ===== */
+        .timer-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 38, 71, 0.60);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .timer-overlay.active {
+            display: flex;
+        }
+
+        .timer-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 32px 28px;
+            max-width: 360px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(26, 74, 138, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.20);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 20%;
+            right: 20%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(26, 74, 138, 0.2), rgba(26, 74, 138, 0.3), rgba(26, 74, 138, 0.2), transparent);
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        .timer-circle {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            font-weight: 700;
+            color: #0a2647;
+            position: relative;
+        }
+
+        .timer-circle .progress-ring {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            width: 170px;
+            height: 170px;
+            transform: rotate(-90deg);
+        }
+
+        .timer-circle .progress-ring circle {
+            fill: none;
+            stroke: #1a4a8a;
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 502;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .timer-circle .progress-ring circle.bg {
+            stroke: rgba(26, 74, 138, 0.08);
+            stroke-dashoffset: 0;
+        }
+
+        .timer-tips {
+            font-size: 14px;
+            color: #2a5a7a;
+            margin: 10px 0 14px;
+            min-height: 50px;
+            line-height: 1.5;
+            font-weight: 450;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .timer-controls button {
+            padding: 10px 24px;
+            border-radius: 40px;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .timer-controls button:active {
+            transform: scale(0.94);
+        }
+
+        .btn-pause {
+            background: rgba(200, 160, 50, 0.10);
+            color: #8a7a2a;
+            border: 1px solid rgba(200, 160, 50, 0.08);
+        }
+        .btn-stop {
+            background: rgba(192, 57, 43, 0.08);
+            color: #8a2a1a;
+            border: 1px solid rgba(192, 57, 43, 0.06);
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 420px) {
+            body { padding: 12px; }
+            .app-container { padding: 18px 14px 24px; }
+            .header h1 { font-size: 22px; }
+            .header h1 .tooth-icon { font-size: 24px; }
+            .header h1 span { font-size: 15px; padding: 3px 12px; }
+            .timer-circle { width: 140px; height: 140px; font-size: 36px; }
+            .timer-circle .progress-ring { width: 140px; height: 140px; }
+            .timer-circle .progress-ring circle { stroke-dasharray: 392; }
+            .care-grid { gap: 8px; }
+            .care-card { padding: 10px 6px 10px; }
+            .care-card .icon { font-size: 24px; }
+            .care-card .name { font-size: 11px; }
+            .care-card-full { padding: 10px 14px; flex-wrap: wrap; gap: 8px; }
+            .care-card-full .left .icon { font-size: 24px; }
+            .notes-box { padding: 20px 16px; }
+            .notes-box textarea { height: 100px; }
+            .notes-box .saved-notes { max-height: 70px; }
+            .notes-box .notes-actions button { padding: 8px 14px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container" id="app">
+
+    <!-- ===== ШАПКА ===== -->
+    <div class="header">
+        <h1>
+            <span class="tooth-icon"><i class="fa-solid fa-tooth"></i></span>
+            Улыбка
+            <span>2×</span>
+        </h1>
+        <button class="notes-btn" id="notesBtn" title="Заметки">
+            <i class="fa-regular fa-note-sticky"></i>
+        </button>
+    </div>
+
+    <div class="subhead">⏰ Утром и вечером — отмечай чистку</div>
+
+    <!-- ===== СТАТУС ===== -->
+    <div class="status-grid">
+        <div class="status-card" id="morningCard">
+            <span class="icon"><i class="fa-regular fa-sun"></i></span>
+            <div class="label">Утро</div>
+            <div class="time-badge">06:00 – 12:00</div>
+            <div class="status-text" id="morningStatus">⏳ ожидает</div>
+        </div>
+        <div class="status-card" id="eveningCard">
+            <span class="icon"><i class="fa-regular fa-moon"></i></span>
+            <div class="label">Вечер</div>
+            <div class="time-badge">20:00 – 00:00</div>
+            <div class="status-text" id="eveningStatus">⏳ ожидает</div>
+        </div>
+    </div>
+
+    <!-- ===== КНОПКА ===== -->
+    <button class="btn-primary" id="startBrushBtn">
+        <span class="icon-inline"><i class="fa-solid fa-tooth"></i></span>
+        Начать чистку (2 мин)
+    </button>
+
+    <!-- ===== УХОД ===== -->
+    <div class="section-title">
+        <i class="fa-solid fa-heart-pulse" style="color:#1a4a8a;font-size:18px;"></i>
+        Уход за зубами
+        <span class="badge">ежедневно + график</span>
+    </div>
+
+    <div class="care-grid" id="careGrid">
+        <!-- Ирригатор -->
+        <div class="care-card" data-care="irrigator">
+            <span class="icon"><i class="fa-solid fa-water"></i></span>
+            <div class="name">Ирригатор</div>
+            <div class="freq">Ежедневно</div>
+            <div class="status-text pending" id="irrigatorStatus">⏳</div>
+            <button class="btn-mark" data-care="irrigator">✅ Отметить</button>
+        </div>
+
+        <!-- Ополаскиватель -->
+        <div class="care-card" data-care="mouthwash">
+            <span class="icon"><i class="fa-solid fa-droplet"></i></span>
+            <div class="name">Ополаскиватель</div>
+            <div class="freq">Ежедневно</div>
+            <div class="status-text pending" id="mouthwashStatus">⏳</div>
+            <button class="btn-mark" data-care="mouthwash">✅ Отметить</button>
+        </div>
+
+        <!-- Скаллер -->
+        <div class="care-card" data-care="scaler" id="scalerCard">
+            <span class="icon"><i class="fa-solid fa-tooth"></i></span>
+            <div class="name">Скаллер</div>
+            <div class="freq">Раз в 6 мес.</div>
+            <div class="status-text pending" id="scalerStatus">⏳</div>
+            <button class="btn-mark" data-care="scaler">✅ Отметить</button>
+        </div>
+    </div>
+
+    <!-- Стоматолог -->
+    <div class="care-grid" style="margin-bottom: 0;">
+        <div class="care-card-full" data-care="dentist" id="dentistCard">
+            <div class="left">
+                <span class="icon"><i class="fa-solid fa-user-doctor"></i></span>
+                <div class="info">
+                    <div class="name">Стоматолог</div>
+                    <div class="freq">Раз в год — профилактический осмотр</div>
+                </div>
+            </div>
+            <div class="right">
+                <span class="status-text pending" id="dentistStatus">⏳</span>
+                <button class="btn-mark" data-care="dentist">✅ Отметить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== КАЛЕНДАРЬ ===== -->
+    <div class="calendar-section">
+        <div class="calendar-header">
+            <span class="month" id="calendarMonth">Январь 2026</span>
+            <div class="calendar-nav">
+                <button id="calPrev"><i class="fa-solid fa-chevron-left"></i></button>
+                <button id="calNext"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <div class="calendar-legend">
+            <span><span class="dot dot-green"></span> ✅ оба</span>
+            <span><span class="dot dot-yellow"></span> ⚠️ 1 из 2</span>
+            <span><span class="dot dot-red"></span> ❌ пропуск</span>
+            <span><span class="dot dot-gray"></span> нет данных</span>
+        </div>
+    </div>
+
+    <!-- ===== ИСТОРИЯ ===== -->
+    <div class="log-area">
+        <div class="log-title">
+            <span><i class="fa-regular fa-clock" style="color:#1a4a8a;margin-right:6px;"></i> История</span>
+            <span id="logCount">0 записей</span>
+        </div>
+        <div class="log-list" id="logList">
+            <div style="color: #7a9aba; font-size: 13px; padding: 8px 0; text-align: center;">Пока нет записей</div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">🔔 Напоминание</div>
+</div>
+
+<!-- ===== ЗАМЕТКИ ===== -->
+<div class="notes-overlay" id="notesOverlay">
+    <div class="notes-box">
+        <h2><i class="fa-regular fa-note-sticky" style="color:#1a4a8a;"></i> Заметки</h2>
+        <div id="notesList">
+            <div class="saved-notes empty">Пока нет сохранённых заметок</div>
+        </div>
+        <textarea id="notesTextarea" placeholder="Добавьте новую заметку..."></textarea>
+        <div class="char-count" id="charCount">0 символов</div>
+        <div class="notes-actions">
+            <button class="btn-close" id="notesCloseBtn">Закрыть</button>
+            <button class="btn-delete-all" id="notesDeleteAllBtn"><i class="fa-regular fa-trash-can"></i> Удалить всё</button>
+            <button class="btn-save" id="notesSaveBtn"><i class="fa-regular fa-floppy-disk"></i> Сохранить</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ТАЙМЕР ===== -->
+<div class="timer-overlay" id="timerOverlay">
+    <div class="timer-box">
+        <div class="timer-circle" id="timerCircle">
+            <svg class="progress-ring" width="170" height="170">
+                <circle class="bg" cx="85" cy="85" r="80" stroke="rgba(26,74,138,0.08)" stroke-width="6"/>
+                <circle id="timerProgress" cx="85" cy="85" r="80" stroke="#1a4a8a" stroke-width="6"
+                        stroke-linecap="round" stroke-dasharray="502" stroke-dashoffset="0"/>
+            </svg>
+            <span id="timerDisplay">2:00</span>
+        </div>
+        <div class="timer-tips" id="timerTips">Начните с верхней челюсти, двигайтесь круговыми движениями</div>
+        <div class="timer-controls">
+            <button class="btn-pause" id="timerPauseBtn"><i class="fa-solid fa-pause"></i> Пауза</button>
+            <button class="btn-stop" id="timerStopBtn"><i class="fa-solid fa-stop"></i> Стоп</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// ПОЛНЫЙ JAVASCRIPT (БЕЗ НАПОМИНАНИЙ)
+// ============================================================
+
+(function() {
+    const STATE_KEY = 'toothbrush_state_v7';
+    let state = {};
+
+    function getDefaultState() {
+        return {
+            logs: [],
+            careLogs: {
+                mouthwash: [],
+                irrigator: [],
+                scaler: [],
+                dentist: []
+            },
+            notes: '',
+            remindMorning: true,
+            remindEvening: true
+        };
+    }
+
+    function loadState() {
+        try {
+            const raw = localStorage.getItem(STATE_KEY);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                state = parsed;
+                return;
+            }
+        } catch(e) {}
+        state = getDefaultState();
+        saveState();
+    }
+
+    function saveState() {
+        try {
+            localStorage.setItem(STATE_KEY, JSON.stringify(state));
+        } catch(e) {}
+    }
+
+    function getToday() {
+        const d = new Date();
+        return d.getFullYear() + '-' +
+               String(d.getMonth() + 1).padStart(2,'0') + '-' +
+               String(d.getDate()).padStart(2,'0');
+    }
+
+    function getCurrentHour() {
+        return new Date().getHours();
+    }
+
+    function isMorningInterval() {
+        const h = getCurrentHour();
+        return h >= 6 && h < 12;
+    }
+
+    function isEveningInterval() {
+        const h = getCurrentHour();
+        return h >= 20 && h < 24;
+    }
+
+    function getActiveInterval() {
+        if (isMorningInterval()) return 'morning';
+        if (isEveningInterval()) return 'evening';
+        return null;
+    }
+
+    function formatDate(d) {
+        return d.getFullYear() + '-' +
+               String(d.getMonth() + 1).padStart(2,'0') + '-' +
+               String(d.getDate()).padStart(2,'0');
+    }
+
+    function getDayStatus(dateStr) {
+        const dayLogs = state.logs.filter(l => l.date === dateStr);
+        if (dayLogs.length === 0) return null;
+        const hasMorning = dayLogs.some(l => l.type === 'morning');
+        const hasEvening = dayLogs.some(l => l.type === 'evening');
+        if (hasMorning && hasEvening) return 'complete';
+        if (hasMorning || hasEvening) return 'partial';
+        return 'missed';
+    }
+
+    function getTodayStatus() {
+        const today = getToday();
+        const dayLogs = state.logs.filter(l => l.date === today);
+        return {
+            hasMorning: dayLogs.some(l => l.type === 'morning'),
+            hasEvening: dayLogs.some(l => l.type === 'evening')
+        };
+    }
+
+    function getCareStatus(careType) {
+        const logs = state.careLogs[careType] || [];
+        if (logs.length === 0) return { status: 'pending', lastDate: null, isVisible: true };
+
+        const sorted = [...logs].sort((a, b) => b.localeCompare(a));
+        const last = sorted[0];
+        const today = getToday();
+
+        if (careType === 'scaler') {
+            const lastDate = new Date(last);
+            const sixMonthsAgo = new Date();
+            sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+            if (lastDate >= sixMonthsAgo) {
+                return { status: 'done', lastDate: last, isVisible: false };
+            } else {
+                return { status: 'overdue', lastDate: last, isVisible: true };
+            }
+        }
+
+        if (careType === 'dentist') {
+            const lastDate = new Date(last);
+            const oneYearAgo = new Date();
+            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+            if (lastDate >= oneYearAgo) {
+                return { status: 'done', lastDate: last, isVisible: false };
+            } else {
+                return { status: 'overdue', lastDate: last, isVisible: true };
+            }
+        }
+
+        if (last === today) {
+            return { status: 'done', lastDate: last, isVisible: true };
+        } else {
+            return { status: 'pending', lastDate: last, isVisible: true };
+        }
+    }
+
+    function renderUI() {
+        const { hasMorning, hasEvening } = getTodayStatus();
+
+        document.getElementById('morningCard').classList.toggle('active', hasMorning);
+        document.getElementById('eveningCard').classList.toggle('active', hasEvening);
+        document.getElementById('morningStatus').textContent = hasMorning ? '✅ сделано' : '⏳ ожидает';
+        document.getElementById('eveningStatus').textContent = hasEvening ? '✅ сделано' : '⏳ ожидает';
+
+        const active = getActiveInterval();
+        const btn = document.getElementById('startBrushBtn');
+        let disabled = true;
+        if (active === 'morning' && !hasMorning) disabled = false;
+        else if (active === 'evening' && !hasEvening) disabled = false;
+        btn.disabled = disabled;
+
+        if (active === 'morning' && !hasMorning) {
+            btn.innerHTML = '<span class="icon-inline"><i class="fa-solid fa-sun"></i></span> Отметить утро';
+        } else if (active === 'evening' && !hasEvening) {
+            btn.innerHTML = '<span class="icon-inline"><i class="fa-solid fa-moon"></i></span> Отметить вечер';
+        } else if (hasMorning && hasEvening) {
+            btn.innerHTML = '<span class="icon-inline"><i class="fa-solid fa-check-circle"></i></span> Всё на сегодня';
+        } else if (active === null) {
+            btn.innerHTML = '<span class="icon-inline"><i class="fa-regular fa-clock"></i></span> Сейчас не время';
+        } else {
+            btn.innerHTML = '<span class="icon-inline"><i class="fa-solid fa-check"></i></span> Отметить чистку';
+        }
+
+        renderCare();
+        renderLog();
+        renderCalendar();
+        renderNotesList();
+
+        saveState();
+    }
+
+    function renderCare() {
+        const careTypes = ['mouthwash', 'irrigator', 'scaler', 'dentist'];
+        const careGrid = document.getElementById('careGrid');
+
+        const scalerStatus = getCareStatus('scaler');
+        const isScalerVisible = scalerStatus.isVisible;
+
+        if (!isScalerVisible) {
+            careGrid.classList.add('two-cols');
+        } else {
+            careGrid.classList.remove('two-cols');
+        }
+
+        for (const type of careTypes) {
+            const status = getCareStatus(type);
+            const el = document.getElementById(type + 'Status');
+            let card;
+
+            if (type === 'dentist') {
+                card = document.getElementById('dentistCard');
+            } else {
+                card = document.getElementById(type + 'Card');
+            }
+
+            if (!el || !card) continue;
+
+            if (type === 'scaler' || type === 'dentist') {
+                if (!status.isVisible) {
+                    card.classList.add('hidden');
+                    continue;
+                } else {
+                    card.classList.remove('hidden');
+                }
+            }
+
+            if (status.status === 'done') {
+                el.textContent = '✅ сделано';
+                el.className = 'status-text done';
+                card.classList.add('done');
+            } else if (status.status === 'overdue') {
+                el.textContent = '❗ пора!';
+                el.className = 'status-text overdue';
+                card.classList.remove('done');
+            } else {
+                el.textContent = '⏳ ожидает';
+                el.className = 'status-text pending';
+                card.classList.remove('done');
+            }
+        }
+    }
+
+    // ===== ЗАМЕТКИ =====
+    function renderNotesList() {
+        const container = document.getElementById('notesList');
+        const notes = state.notes ? state.notes.split('\n\n').filter(n => n.trim() !== '') : [];
+
+        if (notes.length === 0) {
+            container.innerHTML = `<div class="saved-notes empty">Пока нет сохранённых заметок</div>`;
+            return;
+        }
+
+        let html = '';
+        for (let i = 0; i < notes.length; i++) {
+            const note = notes[i];
+            html += `
+                <div class="note-item" data-index="${i}">
+                    <span class="note-text">${escapeHtml(note)}</span>
+                    <button class="note-delete-btn" data-index="${i}" title="Удалить заметку"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+
+        container.querySelectorAll('.note-delete-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const index = parseInt(this.dataset.index);
+                deleteSingleNote(index);
+            });
+        });
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function deleteSingleNote(index) {
+        const notes = state.notes ? state.notes.split('\n\n').filter(n => n.trim() !== '') : [];
+        
+        if (index < 0 || index >= notes.length) return;
+        
+        if (confirm(`🗑️ Удалить эту заметку?\n\n"${notes[index].substring(0, 60)}${notes[index].length > 60 ? '...' : ''}"`)) {
+            notes.splice(index, 1);
+            state.notes = notes.join('\n\n');
+            saveState();
+            renderNotesList();
+            showToast('🗑️ Заметка удалена');
+        }
+    }
+
+    function deleteAllNotes() {
+        const notes = state.notes ? state.notes.split('\n\n').filter(n => n.trim() !== '') : [];
+        
+        if (notes.length === 0) {
+            showToast('📝 Нет заметок для удаления');
+            return;
+        }
+
+        if (confirm(`🗑️ Удалить все ${notes.length} заметок?`)) {
+            state.notes = '';
+            saveState();
+            renderNotesList();
+            showToast('🗑️ Все заметки удалены');
+        }
+    }
+
+    function openNotes() {
+        renderNotesList();
+        document.getElementById('notesTextarea').value = '';
+        document.getElementById('charCount').textContent = '0 символов';
+        document.getElementById('notesOverlay').classList.add('active');
+    }
+
+    function closeNotes() {
+        document.getElementById('notesOverlay').classList.remove('active');
+    }
+
+    function saveNotes() {
+        const text = document.getElementById('notesTextarea').value.trim();
+        if (text === '') {
+            showToast('✏️ Введите текст заметки');
+            return;
+        }
+
+        const current = state.notes || '';
+        state.notes = current ? current + '\n\n' + text : text;
+        saveState();
+        renderNotesList();
+        document.getElementById('notesTextarea').value = '';
+        document.getElementById('charCount').textContent = '0 символов';
+        showToast('💾 Заметка сохранена!');
+    }
+
+    // ===== ЛОГ =====
+    function renderLog() {
+        const list = document.getElementById('logList');
+        const logs = state.logs;
+
+        if (logs.length === 0) {
+            list.innerHTML = `<div style="color: #7a9aba; font-size: 13px; padding: 8px 0; text-align: center;">Пока нет записей</div>`;
+            document.getElementById('logCount').textContent = '0 записей';
+            return;
+        }
+
+        const grouped = {};
+        for (const entry of logs) {
+            if (!grouped[entry.date]) grouped[entry.date] = [];
+            grouped[entry.date].push(entry);
+        }
+
+        const dates = Object.keys(grouped).sort((a, b) => b.localeCompare(a));
+        let shown = 0;
+        let html = '';
+
+        for (const date of dates) {
+            if (shown >= 15) break;
+            const entries = grouped[date];
+            const hasM = entries.some(e => e.type === 'morning');
+            const hasE = entries.some(e => e.type === 'evening');
+
+            let icon = '', cls = '';
+            if (hasM && hasE) { icon = '✅'; cls = 'done'; }
+            else if (hasM || hasE) { icon = '⚠️'; cls = 'partial'; }
+            else { icon = '❗'; cls = 'missed'; }
+
+            const last = entries.reduce((a, b) => a.time > b.time ? a : b);
+
+            html += `
+                <div class="log-item">
+                    <div class="log-left">
+                        <span>📅</span>
+                        <span>${date}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <span class="log-time">${last.time}</span>
+                        <span class="log-status-icon ${cls}">${icon}</span>
+                    </div>
+                </div>
+            `;
+            shown++;
+        }
+
+        list.innerHTML = html;
+        document.getElementById('logCount').textContent = logs.length + ' записей';
+    }
+
+    // ===== КАЛЕНДАРЬ =====
+    let currentCalendarDate = new Date();
+
+    function renderCalendar() {
+        const year = currentCalendarDate.getFullYear();
+        const month = currentCalendarDate.getMonth();
+
+        document.getElementById('calendarMonth').textContent =
+            new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' }).format(currentCalendarDate);
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
+        let startOffset = firstDay === 0 ? 6 : firstDay - 1;
+        const today = getToday();
+
+        let html = '';
+        for (const name of dayNames) {
+            html += `<div class="day-name">${name}</div>`;
+        }
+
+        for (let i = 0; i < startOffset; i++) {
+            html += `<div class="day-cell empty"></div>`;
+        }
+
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateObj = new Date(year, month, d);
+            const dateStr = formatDate(dateObj);
+            const isToday = dateStr === today;
+
+            const status = getDayStatus(dateStr);
+            let statusClass = '';
+            let icon = '';
+
+            if (status === 'complete') {
+                statusClass = 'status-complete';
+                icon = '✅';
+            } else if (status === 'partial') {
+                statusClass = 'status-partial';
+                icon = '⚠️';
+            } else if (status === 'missed') {
+                statusClass = 'status-missed';
+                icon = '❌';
+            }
+
+            const todayClass = isToday ? 'today' : '';
+            html += `
+                <div class="day-cell ${statusClass} ${todayClass}">
+                    <span class="status-icon">${icon || d}</span>
+                </div>
+            `;
+        }
+
+        document.getElementById('calendarGrid').innerHTML = html;
+    }
+
+    // ===== ТАЙМЕР =====
+    let timerInterval = null;
+    let timerSeconds = 120;
+    let timerPaused = false;
+    let timerRunning = false;
+
+    const timerTips = [
+        'Начните с верхней челюсти, двигайтесь круговыми движениями',
+        'Чистите внешнюю поверхность зубов мягкими движениями',
+        'Перейдите на внутреннюю поверхность зубов',
+        'Не забывайте про жевательную поверхность зубов',
+        'Аккуратно почистите язык и внутреннюю часть щёк',
+        'Завершите чистку — прополощите рот водой'
+    ];
+
+    function startTimer() {
+        if (timerRunning) return;
+
+        const overlay = document.getElementById('timerOverlay');
+        overlay.classList.add('active');
+
+        timerSeconds = 120;
+        timerPaused = false;
+        timerRunning = true;
+
+        updateTimerDisplay();
+        updateTimerTip();
+
+        timerInterval = setInterval(() => {
+            if (!timerPaused) {
+                timerSeconds--;
+                updateTimerDisplay();
+
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerRunning = false;
+                    showToast('⏰ Время вышло! Отличная работа! 🎉');
+                    document.getElementById('timerOverlay').classList.remove('active');
+                    handleMarkBrush();
+                }
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const mins = Math.floor(timerSeconds / 60);
+        const secs = timerSeconds % 60;
+        document.getElementById('timerDisplay').textContent =
+            `${mins}:${secs.toString().padStart(2, '0')}`;
+
+        const progress = 1 - (timerSeconds / 120);
+        const circumference = 502;
+        const offset = circumference * (1 - progress);
+        document.getElementById('timerProgress').style.strokeDashoffset = offset;
+    }
+
+    function updateTimerTip() {
+        const index = Math.floor((120 - timerSeconds) / 20);
+        const tip = timerTips[Math.min(index, timerTips.length - 1)];
+        document.getElementById('timerTips').textContent = tip;
+    }
+
+    function togglePause() {
+        timerPaused = !timerPaused;
+        document.getElementById('timerPauseBtn').innerHTML = timerPaused ? '<i class="fa-solid fa-play"></i> Продолжить' : '<i class="fa-solid fa-pause"></i> Пауза';
+        if (!timerPaused) {
+            updateTimerTip();
+        }
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timerOverlay').classList.remove('active');
+        showToast('⏹ Таймер остановлен');
+    }
+
+    // ===== ОТМЕТКИ =====
+    function handleMarkBrush() {
+        const active = getActiveInterval();
+        if (!active) {
+            showToast('⏳ Сейчас не время для чистки по расписанию');
+            return;
+        }
+
+        const today = getToday();
+        const { hasMorning, hasEvening } = getTodayStatus();
+
+        if (active === 'morning' && hasMorning) {
+            showToast('🌅 Утро уже отмечено!');
+            return;
+        }
+        if (active === 'evening' && hasEvening) {
+            showToast('🌙 Вечер уже отмечен!');
+            return;
+        }
+
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+        state.logs.push({
+            date: today,
+            time: timeStr,
+            type: active
+        });
+
+        saveState();
+        renderUI();
+        showToast(`✅ Отлично! (${active === 'morning' ? 'Утро' : 'Вечер'})`);
+    }
+
+    function handleCareMark(careType) {
+        const today = getToday();
+        const status = getCareStatus(careType);
+
+        if (careType === 'scaler') {
+            if (status.status === 'done') {
+                showToast('🦷 Скаллер уже отмечен! Следующий раз через 6 месяцев.');
+                return;
+            }
+        }
+
+        if (careType === 'dentist') {
+            if (status.status === 'done') {
+                showToast('👨‍⚕️ Визит к стоматологу уже отмечен! Следующий через год.');
+                return;
+            }
+        }
+
+        if (careType === 'mouthwash' || careType === 'irrigator') {
+            if (status.status === 'done') {
+                showToast(`✅ ${careType === 'mouthwash' ? 'Ополаскиватель' : 'Ирригатор'} уже отмечен сегодня!`);
+                return;
+            }
+        }
+
+        if (!state.careLogs[careType]) state.careLogs[careType] = [];
+        state.careLogs[careType].push(today);
+        saveState();
+        renderUI();
+
+        const names = {
+            mouthwash: 'Ополаскиватель',
+            irrigator: 'Ирригатор',
+            scaler: 'Скаллер',
+            dentist: 'Стоматолог'
+        };
+        showToast(`✅ ${names[careType]} отмечен!`);
+    }
+
+    // ===== TOAST =====
+    let toastTimeout = null;
+
+    function showToast(msg) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            el.classList.remove('show');
+        }, 3000);
+    }
+
+    // ===== ИНИЦИАЛИЗАЦИЯ =====
+    function init() {
+        loadState();
+        renderUI();
+
+        document.getElementById('startBrushBtn').addEventListener('click', function() {
+            const active = getActiveInterval();
+            if (!active) {
+                showToast('⏳ Сейчас не время для чистки по расписанию');
+                return;
+            }
+            startTimer();
+        });
+
+        document.querySelectorAll('.btn-mark[data-care]').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const careType = this.dataset.care;
+                handleCareMark(careType);
+            });
+        });
+
+        document.getElementById('calPrev').addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+            renderCalendar();
+        });
+        document.getElementById('calNext').addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        document.getElementById('timerPauseBtn').addEventListener('click', togglePause);
+        document.getElementById('timerStopBtn').addEventListener('click', stopTimer);
+
+        document.getElementById('timerOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                stopTimer();
+            }
+        });
+
+        document.getElementById('notesBtn').addEventListener('click', openNotes);
+        document.getElementById('notesCloseBtn').addEventListener('click', closeNotes);
+        document.getElementById('notesSaveBtn').addEventListener('click', saveNotes);
+        document.getElementById('notesDeleteAllBtn').addEventListener('click', deleteAllNotes);
+
+        document.getElementById('notesTextarea').addEventListener('input', function() {
+            document.getElementById('charCount').textContent = this.value.length + ' символов';
+        });
+
+        document.getElementById('notesOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeNotes();
+            }
+        });
+
+        // Обновление раз в минуту (только для UI, без напоминаний)
+        setInterval(() => {
+            renderUI();
+        }, 60000);
+    }
+
+    init();
+})();
+</script>
+</body>
+</html>
